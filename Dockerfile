@@ -27,7 +27,7 @@ ENV PATH $PATH:/opt/platform-tools
 
 # Install open ssh
 RUN apk add --update --no-cache openssh
-RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+ADD files/sshd_config /etc/ssh/sshd_config
 
 # Expose openssh server
 EXPOSE 22
