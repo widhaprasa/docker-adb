@@ -6,9 +6,6 @@ ADD files/insecure_shared_adbkey /root/.android/adbkey
 ADD files/insecure_shared_adbkey.pub /root/.android/adbkey.pub
 ADD files/update-platform-tools.sh /usr/local/bin/update-platform-tools.sh
 
-# Add adbportforward to image
-ADD adbportforward.jar .
-
 RUN set -xeo pipefail && \
     apk update && \
     apk add wget ca-certificates tini && \
@@ -27,6 +24,9 @@ RUN set -xeo pipefail && \
 
 # Set up PATH
 ENV PATH $PATH:/opt/platform-tools
+
+# Add adbportforward to image
+ADD files/adbportforward.jar .
 
 # Expose adb server
 EXPOSE 6037
