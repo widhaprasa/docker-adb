@@ -32,4 +32,4 @@ ADD files/adbportforward.jar .
 EXPOSE 6037
 
 # Entrypoint adb server
-ENTRYPOINT [ "java", "-jar", "adbportforward.jar", "server", "adblocation=adb" ]
+ENTRYPOINT [ "java", "-jar", "adbportforward.jar", "server", "adblocation=/opt/platform-tools" ]
