@@ -40,6 +40,7 @@ EXPOSE 6037
 
 # Add docker-entrypoint to image
 ADD files/docker-entrypoint.sh .
+RUN chmod +x docker-entrypoint.sh
 
 # Entrypoint adb server
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+ENTRYPOINT "./docker-entrypoint.sh"
