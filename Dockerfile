@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM openjdk:8u212-jre-alpine3.9
 
 # Set up insecure default key
 RUN mkdir -m 0750 /root/.android
@@ -22,14 +22,14 @@ RUN set -xeo pipefail && \
     rm -r /var/cache/apk/APKINDEX.* && \
     /usr/local/bin/update-platform-tools.sh
 
-# Expose default ADB port
-EXPOSE 5037
-
 # Set up PATH
 ENV PATH $PATH:/opt/platform-tools
 
-# Hook up tini as the default init system for proper signal handling
-ENTRYPOINT ["/sbin/tini", "--"]
+# Add adbportforward to image
+COPY adbportforward.jar .
 
-# Start the server by default
-CMD ["adb", "-a", "-P", "5037", "server", "nodaemon"]
+# Expose adb server
+EXPOSE 6037
+
+# Entrypoint adb server
+ENTRYPOINT [ "java", "-jar", "adbportforward.jar", "server", "adblocation=adb" ]
