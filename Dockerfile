@@ -25,11 +25,21 @@ RUN set -xeo pipefail && \
 # Set up PATH
 ENV PATH $PATH:/opt/platform-tools
 
+# Install open ssh
+RUN apk add --update --no-cache openssh
+RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+
+# Expose openssh server
+EXPOSE 22
+
 # Add adbportforward to image
 ADD files/adbportforward.jar .
 
 # Expose adb server
 EXPOSE 6037
 
+# Add docker-entrypoint to image
+ADD files/docker-entrypoint.sh .
+
 # Entrypoint adb server
-ENTRYPOINT [ "java", "-jar", "adbportforward.jar", "server", "adblocation=/opt/platform-tools" ]
+ENTRYPOINT [ "docker-entrypoint.sh" ]
