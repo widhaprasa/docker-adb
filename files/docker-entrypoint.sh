@@ -5,7 +5,8 @@ adduser -h /home/$SSHUSER -s /bin/sh -D $SSHUSER
 echo -n adb:$SSHPASS | chpasswd
 
 # Start ssh as daemon service
-/etc/init.d/sshd restart
+ssh-keygen -A
+/usr/sbin/sshd -D -e "$@"
 
 # Start adbportforward as entrypoint
 java -jar adbportforward.jar server adblocation=/opt/platform-tools
