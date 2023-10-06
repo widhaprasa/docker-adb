@@ -27,20 +27,27 @@ ENV PATH $PATH:/opt/platform-tools
 
 # Install open ssh
 RUN apk add --update --no-cache openssh
-ADD files/sshd_config /etc/ssh/sshd_config
+ADD files/sshd_config /etc/ssh/.
+
+# Volume ssh key
+RUN mkdir /ssh
+VOLUME ssh
 
 # Expose openssh server
 EXPOSE 22
 
 # Add adbportforward to image
-ADD files/adbportforward.jar .
+ADD files/adbportforward.jar /opt/.
 
 # Expose adb server
 EXPOSE 6037
 
 # Add docker-entrypoint to image
-ADD files/docker-entrypoint.sh .
-RUN chmod +x docker-entrypoint.sh
+ADD files/docker-entrypoint.sh /opt/.
+RUN chmod +x /opt/docker-entrypoint.sh
+
+# Change workdir
+WORKDIR /opt
 
 # Entrypoint adb server
 ENTRYPOINT "./docker-entrypoint.sh"
